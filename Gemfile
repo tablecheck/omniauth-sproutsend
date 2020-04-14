@@ -9,4 +9,5 @@ group :test do
   gem 'rack-test'
   gem 'simplecov'
   gem 'webmock'
+  gem 'pry-byebug'
 end

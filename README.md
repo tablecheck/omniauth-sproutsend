@@ -19,6 +19,16 @@ Next, tell OmniAuth about this provider. For a Rails app, your `config/initializ
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :sproutsend, ENV['SPROUT_CLIENT_ID'], ENV['SPROUT_CLIENT_SECRET'],
     {
+      whitelabel: ENV['SPROUT_WHITELABEL']
+    }
+end
+```
+
+Or you can set site with custom domain
+```ruby
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :sproutsend, ENV['SPROUT_CLIENT_ID'], ENV['SPROUT_CLIENT_SECRET'],
+    {
        client_options: {
          site: ENV['SPROUT_API_URL']
        }

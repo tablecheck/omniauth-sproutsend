@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe OmniAuth::Strategies::Sproutsend do
   let(:request) { double('Request', :params => {}, :cookies => {}, :env => {}) }
+  let(:options) { { whitelabel: 'custom_whitelabel' } }
 
   subject do
-    args = ['channel_id', 'secret', @options || {}].compact
+    args = ['sproutsend', 'client_id', 'client_secret', options || {}].compact
     described_class.new(*args).tap do |strategy|
       allow(strategy).to receive(:request) {
         request
@@ -18,7 +19,17 @@ describe OmniAuth::Strategies::Sproutsend do
     end
 
     it 'should have correct site' do
-      expect(subject.options.client_options.site).to eq('sproutsend')
+      expect(subject.options.client_options.site)
+        .to eq("https://custom_whitelabel.api.contacta.io")
+    end
+
+    context 'when site set instead of whitelabel' do
+      let(:options) { { client_options: { site: 'https://api.custom_domain' } } }
+
+      it 'should have correct site' do
+        expect(subject.options.client_options.site)
+          .to eq('https://api.custom_domain')
+      end
     end
 
     it 'should have correct authorize url' do
